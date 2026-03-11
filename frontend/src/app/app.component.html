@@ -1,0 +1,35 @@
+<div class="container">
+  <h1>🎓 Annuaire DevOps - Kubernetes</h1>
+
+  <div class="card form-card">
+    <h2>Ajouter un étudiant</h2>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="newStudent.name" placeholder="Nom complet" />
+      <input type="email" [(ngModel)]="newStudent.email" placeholder="Adresse Email" />
+      <button class="btn-add" (click)="addStudent()">Ajouter</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Liste des étudiants</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students">
+          <td>#{{ student.id }}</td>
+          <td><strong>{{ student.name }}</strong></td>
+          <td>{{ student.email }}</td>
+          <td><button class="btn-delete" (click)="deleteStudent(student.id)">Supprimer</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="students.length === 0" class="empty-msg">Aucun étudiant dans la base de données.</p>
+  </div>
+</div>

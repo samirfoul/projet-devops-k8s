@@ -1,0 +1,108 @@
+---
+# 1. LE DEPLOYMENT DU BACKEND
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2 # <-- RÉPLICATION DEMANDÉE PAR LE PROF
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: samfoul/backend-k8s:v1
+        ports:
+        - containerPort: 3000
+        env: # <-- INJECTION DES SECRETS DE LA BDD
+        - name: DB_HOST
+          value: "app-db-rw" # Le service créé par l'opérateur Postgres
+        - name: DB_USER
+          value: "app"
+        - name: DB_NAME
+          value: "app"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-db-app # Le secret créé par l'opérateur Postgres
+              key: password
+
+---
+# 2. LE SERVICE DU BACKEND (Pour qu'il soit joignable)
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 3000
+    targetPort: 3000
+
+---
+# 3. LE DEPLOYMENT DU FRONTEND
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 2 # <-- RÉPLICATION
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: samfoul/frontend-k8s:v2 # <-- NOTRE VERSION CORRIGÉE
+        ports:
+        - containerPort: 80
+
+---
+# 4. LE SERVICE DU FRONTEND
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+
+---
+# 5. L'INGRESS TRAEFIK (Le routeur principal)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 3000
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
