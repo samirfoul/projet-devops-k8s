@@ -2,11 +2,18 @@
   <h1>🎓 Annuaire DevOps - Kubernetes</h1>
 
   <div class="card form-card">
-    <h2>Ajouter un étudiant</h2>
+    <h2>{{ isEditing ? 'Modifier l\'étudiant #' + editingStudentId : 'Ajouter un étudiant' }}</h2>
+
     <div class="form-group">
       <input type="text" [(ngModel)]="newStudent.name" placeholder="Nom complet" />
       <input type="email" [(ngModel)]="newStudent.email" placeholder="Adresse Email" />
-      <button class="btn-add" (click)="addStudent()">Ajouter</button>
+
+      <button class="btn-add" (click)="saveStudent()">
+        {{ isEditing ? 'Sauvegarder' : 'Ajouter' }}
+      </button>
+      <button *ngIf="isEditing" class="btn-cancel" (click)="cancelEdit()">
+        Annuler
+      </button>
     </div>
   </div>
 
@@ -18,7 +25,7 @@
           <th>ID</th>
           <th>Nom</th>
           <th>Email</th>
-          <th>Action</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +33,10 @@
           <td>#{{ student.id }}</td>
           <td><strong>{{ student.name }}</strong></td>
           <td>{{ student.email }}</td>
-          <td><button class="btn-delete" (click)="deleteStudent(student.id)">Supprimer</button></td>
+          <td class="action-buttons">
+            <button class="btn-edit" (click)="startEdit(student)">Modifier</button>
+            <button class="btn-delete" (click)="deleteStudent(student.id)">Supprimer</button>
+          </td>
         </tr>
       </tbody>
     </table>

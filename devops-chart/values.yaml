@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
-  backend: samfoul/backend-k8s:v1
-  frontend: samfoul/frontend-k8s:v2
+  backend: samfoul/backend-k8s:v3
+  frontend: samfoul/frontend-k8s:v3
 resources:
   requests:
     cpu: 10m
