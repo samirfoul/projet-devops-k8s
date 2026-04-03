@@ -1,11 +1,8 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* --- IMAGE DE FOND --- */
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('assets/background.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
-  /* ---------------------- */
+  /* --- FOND ANIMÉ KUBERNETES --- */
+  background: #0a0f1e;
+  /* ----------------------------- */
   margin: 0;
   padding: 40px;
   color: #fff;
