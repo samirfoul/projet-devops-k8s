@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: samfoul/frontend-k8s:v4 # <-- Animation Canvas Kubernetes
+        image: samfoul/frontend-k8s:v5 # <-- Animation Canvas + fix cache Nginx
         ports:
         - containerPort: 80
 
