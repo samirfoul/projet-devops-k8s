@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: samfoul/frontend-k8s:v2 # <-- NOTRE VERSION CORRIGÉE
+        image: samfoul/frontend-k8s:v4 # <-- Animation Canvas Kubernetes
         ports:
         - containerPort: 80
 
